@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Warna default aplikasi Anda -->
+    <color name="blue_primary">#2196F3</color>   <!-- biru -->
+    <color name="white_bg">#FFFFFF</color>       <!-- putih -->
+    <color name="blue_dark">#1976D2</color>     <!-- untuk variasi tombol/status bar -->
+    <color name="purple_200">#FFBB86FC</color>
+    <color name="darker_gray">#FF6200EE</color>
+    <color name="teal_200">#FF03DAC5</color>
+    <color name="black">#FF000000</color>
+    <color name="blue">#2196F3</color> <!-- Warna biru -->
+    <color name="white">#FFFFFF</color> <!-- (Opsional, jika nanti ingin warna putih juga) -->
+    <color name="warna_background_search">#BBDEFB</color> <!-- biru muda tapi lebih terang -->
+
+
+    <!-- Warna Biru Khusus untuk Latar Belakang -->
+    <color name="latar_belakang_biru">#3F51B5</color> <!-- Biru Gelap (Indigo) -->
+    <color name="warna_header">@color/white_bg</color>
+</resources>
+
