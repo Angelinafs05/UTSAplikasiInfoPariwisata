@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.MenuItem
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.example.utsaplikasiinfopariwisata.databinding.ActivityDetailBinding
 import com.example.utsaplikasiinfopariwisata.model.Tourism
 
@@ -18,43 +19,49 @@ class DetailActivity : AppCompatActivity() {
         binding = ActivityDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // Mengambil data dari Intent
+        // Mengambil data dari Intent (Penting: harus diambil di awal)
         val tourismItem = intent.getParcelableExtra<Tourism>("tourism")
+
+
+        // 🟢 BLOK NAVIGASI BottomNavigationView (DITEMPATKAN DI SINI)
+        val bottomNavigation = findViewById<BottomNavigationView>(R.id.bottomNav)
+
+        // Setup Listener untuk perpindahan halaman
+        bottomNavigation.setOnItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.nav_home -> {
+                    // Aksi ini akan pindah ke Home dan menutup Detail.
+                    val intent = Intent(this, MainActivity::class.java)
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP)
+                    startActivity(intent)
+                    finish()
+                    true // Mengembalikan true untuk menandakan event ditangani
+                }
+                R.id.nav_favorites -> {
+                    // Aksi ini akan pindah ke Favorite dan menutup Detail.
+                    val intent = Intent(this, FavoriteActivity::class.java)
+                    startActivity(intent)
+                    finish()
+                    true // Mengembalikan true untuk menandakan event ditangani
+                }
+                else -> false
+            }
+        }
+        // 🟢 AKHIR BLOK NAVIGASI
+
 
         if (tourismItem != null) {
             // --- Action Bar ---
             supportActionBar?.title = tourismItem.name
-            supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
             // --- Tampilkan data utama ---
             binding.ivPhoto.setImageResource(tourismItem.image)
             binding.tvLocation.text = tourismItem.location
             binding.tvDescription.text = tourismItem.description
 
-            // --- Tambahan: Data Dummy Tambahan (nomor, jam buka, dan harga tiket) ---
-            binding.tvPhone.text = tourismItem.phone
-            binding.tvTime.text = tourismItem.time
-            binding.tvPrice.text = "${tourismItem.price}"
+            // ... (Kode Data Dummy Tambahan) ...
 
-            // === 🟢 FITUR: Klik nomor telepon untuk langsung buka dialer ===
-            binding.tvPhone.setOnClickListener {
-                val phoneNumber = binding.tvPhone.text.toString().replace("\\s+".toRegex(), "")
-                if (phoneNumber.isNotEmpty() && phoneNumber != "Tidak ada Nomor Telepon") {
-                    val intent = Intent(Intent.ACTION_DIAL)
-                    intent.data = Uri.parse("tel:$phoneNumber")
-                    startActivity(intent)
-                } else {
-                    Toast.makeText(this, "Nomor telepon tidak tersedia", Toast.LENGTH_SHORT).show()
-                }
-            }
-
-            // --- Tombol menuju Google Maps ---
-            binding.btnMaps.setOnClickListener {
-                val gmmIntentUri = Uri.parse("geo:0,0?q=${tourismItem.name}")
-                val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
-                mapIntent.setPackage("com.google.android.apps.maps")
-                startActivity(mapIntent)
-            }
+            // ... (Kode Listener Klik telepon dan Google Maps) ...
 
             // --- Toast notifikasi ---
             Toast.makeText(this, "Anda melihat detail ${tourismItem.name}", Toast.LENGTH_SHORT).show()
@@ -62,7 +69,7 @@ class DetailActivity : AppCompatActivity() {
             Toast.makeText(this, "Gagal memuat detail tempat wisata.", Toast.LENGTH_SHORT).show()
             finish()
         }
-    }
+    } // ❌ KURUNG KURAWAL onCreate() HANYA DITUTUP SATU KALI DI SINI.
 
     // --- Tombol kembali di Action Bar ---
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -73,3 +80,5 @@ class DetailActivity : AppCompatActivity() {
         return super.onOptionsItemSelected(item)
     }
 }
+// ❌ KURUNG KURAWAL Class DetailActivity HANYA DITUTUP SATU KALI DI BARIS PALING AKHIR.
+
