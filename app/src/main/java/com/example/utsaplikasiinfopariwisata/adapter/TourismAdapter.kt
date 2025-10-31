@@ -26,20 +26,6 @@ class TourismAdapter(
             // Tampilkan rating tanpa RatingBar
             binding.tvRating.text = "⭐ ${item.rating}"
 
-            // Ganti ikon favorit sesuai status
-            val icon = if (item.isFavorite) {
-                R.drawable.ic_star_filled
-            } else {
-                R.drawable.ic_star_border
-            }
-            binding.ivFavorite.setImageResource(icon)
-
-            // Klik ikon favorit untuk toggle
-            binding.ivFavorite.setOnClickListener {
-                item.isFavorite = !item.isFavorite
-                notifyItemChanged(adapterPosition)
-            }
-
             // Klik item untuk buka detail
             binding.root.setOnClickListener { onItemClick(item) }
         }
@@ -50,11 +36,12 @@ class TourismAdapter(
         return ViewHolder(binding)
     }
 
-    override fun getItemCount(): Int = filteredList.size
-
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(filteredList[position])
+        val item = filteredList[position]  // gunakan filteredList, bukan data
+        holder.bind(item) // panggil fungsi bind di ViewHolder
     }
+
+    override fun getItemCount(): Int = filteredList.size
 
     // Filterable implementation (search)
     override fun getFilter(): Filter {

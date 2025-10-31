@@ -10,7 +10,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.example.utsaplikasiinfopariwisata.databinding.ActivityDetailBinding
 import com.example.utsaplikasiinfopariwisata.model.Tourism
 
-class DetailActivity : AppCompatActivity() {
+class DetailActivity : AppCompatActivity() { // Pastikan Anda mendeklarasikan class
 
     private lateinit var binding: ActivityDetailBinding
 
@@ -19,66 +19,51 @@ class DetailActivity : AppCompatActivity() {
         binding = ActivityDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // Mengambil data dari Intent (Penting: harus diambil di awal)
+        // Mengambil data dari Intent
         val tourismItem = intent.getParcelableExtra<Tourism>("tourism")
 
-
-        // 🟢 BLOK NAVIGASI BottomNavigationView (DITEMPATKAN DI SINI)
-        val bottomNavigation = findViewById<BottomNavigationView>(R.id.bottomNav)
-
-        // Setup Listener untuk perpindahan halaman
-        bottomNavigation.setOnItemSelectedListener { item ->
-            when (item.itemId) {
-                R.id.nav_home -> {
-                    // Aksi ini akan pindah ke Home dan menutup Detail.
-                    val intent = Intent(this, MainActivity::class.java)
-                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP)
-                    startActivity(intent)
-                    finish()
-                    true // Mengembalikan true untuk menandakan event ditangani
-                }
-                R.id.nav_favorites -> {
-                    // Aksi ini akan pindah ke Favorite dan menutup Detail.
-                    val intent = Intent(this, FavoriteActivity::class.java)
-                    startActivity(intent)
-                    finish()
-                    true // Mengembalikan true untuk menandakan event ditangani
-                }
-                else -> false
-            }
+        // Jika data null, keluar dari halaman
+        if (tourismItem == null) {
+            Toast.makeText(this, "Gagal memuat detail tempat wisata.", Toast.LENGTH_SHORT).show()
+            finish()
+            return
         }
-        // 🟢 AKHIR BLOK NAVIGASI
-
-
-        if (tourismItem != null) {
-            // --- Action Bar ---
-            supportActionBar?.title = tourismItem.name
-
-            // --- Tampilkan data utama ---
+            // Di dalam blok ini, 'item' DIJAMIN BUKAN null (tipe: Tourism)
+            binding.tvName.text = tourismItem.name
             binding.ivPhoto.setImageResource(tourismItem.image)
             binding.tvLocation.text = tourismItem.location
             binding.tvDescription.text = tourismItem.description
+            binding.tvPhone.text = tourismItem.phone
+            binding.tvTime.text = tourismItem.time
+            binding.tvPrice.text = tourismItem.price
+            // ...
 
-            // ... (Kode Data Dummy Tambahan) ...
-
-            // ... (Kode Listener Klik telepon dan Google Maps) ...
-
-            // --- Toast notifikasi ---
-            Toast.makeText(this, "Anda melihat detail ${tourismItem.name}", Toast.LENGTH_SHORT).show()
-        } else {
-            Toast.makeText(this, "Gagal memuat detail tempat wisata.", Toast.LENGTH_SHORT).show()
-            finish()
+        // klik nomor -> dial
+        binding.tvPhone.setOnClickListener {
+            val phoneNumber = binding.tvPhone.text.toString().trim().replace("\\s+".toRegex(), "")
+            if (phoneNumber.isNotEmpty() && phoneNumber != "Tidak ada Nomor Telepon") {
+                val dialIntent = Intent(Intent.ACTION_DIAL, Uri.parse("tel:$phoneNumber"))
+                startActivity(dialIntent)
+            } else {
+                Toast.makeText(this, "Nomor telepon tidak tersedia", Toast.LENGTH_SHORT).show()
+            }
         }
-    } // ❌ KURUNG KURAWAL onCreate() HANYA DITUTUP SATU KALI DI SINI.
 
-    // --- Tombol kembali di Action Bar ---
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (item.itemId == android.R.id.home) {
-            finish()
-            return true
+        // buka maps
+        binding.btnMaps.setOnClickListener {
+            val gmmIntentUri = Uri.parse("geo:0,0?q=${Uri.encode(tourismItem.name)}")
+            val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
+            mapIntent.setPackage("com.google.android.apps.maps")
+            startActivity(mapIntent)
         }
-        return super.onOptionsItemSelected(item)
+        // Tombol kembali
+        binding.btnBackCustom.setOnClickListener {
+            finish() // Menutup Activity saat ini
+        }
+        //Notifikasi
+        Toast.makeText(this, "Anda melihat detail ${tourismItem.name}", Toast.LENGTH_SHORT).show()
     }
 }
-// ❌ KURUNG KURAWAL Class DetailActivity HANYA DITUTUP SATU KALI DI BARIS PALING AKHIR.
+
+
 

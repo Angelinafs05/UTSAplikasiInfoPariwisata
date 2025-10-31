@@ -6,8 +6,33 @@
     android:id="@+id/rootDetail"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white_bg"
+    android:background="@color/white"
     tools:context=".DetailActivity">
+
+    <!-- 🟦 Bagian header biru -->
+    <LinearLayout
+        android:id="@+id/headerSection"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@color/blue_primary"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:paddingTop="0dp"
+        android:paddingBottom="16dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <TextView
+            android:id="@+id/tvName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Nama Tempat"
+            android:textColor="@android:color/white"
+            android:textSize="26sp"
+            android:textStyle="bold"
+            android:gravity="center"/>
+    </LinearLayout>
 
     <!-- Scrollable content -->
     <ScrollView
@@ -15,8 +40,8 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:fillViewport="true"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/bottomNav"
+        app:layout_constraintTop_toBottomOf="@id/headerSection"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
@@ -35,28 +60,34 @@
                 android:src="@drawable/danau_toba"
                 android:contentDescription="Foto Tempat Wisata"/>
 
-            <!-- Nama tempat -->
-            <TextView
-                android:id="@+id/tvName"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:textSize="22sp"
-                android:textStyle="bold" />
-
             <!-- Lokasi -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
+                android:background="@drawable/bg_info_box"
                 android:gravity="center_vertical"
-                android:layout_marginTop="8dp" >
+                android:layout_marginTop="12dp">
 
                 <ImageView
                     android:layout_width="20dp"
                     android:layout_height="20dp"
                     android:src="@drawable/ic_location"
                     android:contentDescription="Ikon lokasi" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginStart="8dp">
+
+                <TextView
+                    android:text="Lokasi"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:textStyle="bold"
+                    android:textSize="14sp" />
 
                 <TextView
                     android:id="@+id/tvLocation"
@@ -67,20 +98,36 @@
                     android:textSize="16sp"
                     android:textColor="@android:color/black"/>
             </LinearLayout>
+            </LinearLayout>
 
             <!-- Nomor telepon -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center_vertical"
-                android:layout_marginTop="8dp" >
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:background="@drawable/bg_info_box"
+            android:gravity="center_vertical"
+            android:layout_marginTop="12dp">
 
-                <ImageView
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:src="@drawable/ic_phone"
-                    android:contentDescription="Ikon telepon" />
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:src="@drawable/ic_phone"
+                android:contentDescription="Ikon telepon" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginStart="8dp">
+
+                <TextView
+                    android:text="Nomor Telepon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:textStyle="bold"
+                    android:textSize="14sp" />
 
                 <TextView
                     android:id="@+id/tvPhone"
@@ -94,20 +141,37 @@
                     android:clickable="true"
                     android:focusable="true" />
             </LinearLayout>
+            </LinearLayout>
 
             <!-- Jam buka -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
+                android:background="@drawable/bg_info_box"
+                android:padding="8dp"
                 android:gravity="center_vertical"
-                android:layout_marginTop="8dp" >
+                android:layout_marginTop="12dp">
 
                 <ImageView
                     android:layout_width="20dp"
                     android:layout_height="20dp"
                     android:src="@drawable/ic_time"
                     android:contentDescription="Ikon waktu" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginStart="8dp">
+
+                    <TextView
+                        android:text="Jam Buka"
+                        android:textStyle="bold"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:textSize="14sp" />
 
                 <TextView
                     android:id="@+id/tvTime"
@@ -118,21 +182,37 @@
                     android:textSize="16sp"
                     android:textColor="@android:color/black"/>
             </LinearLayout>
+            </LinearLayout>
 
             <!-- Harga Masuk -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
+                android:background="@drawable/bg_info_box"
+                android:padding="8dp"
                 android:gravity="center_vertical"
-                android:layout_marginTop="8dp" >
+                android:layout_marginTop="12dp">
 
                 <ImageView
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
+                    android:layout_width="22dp"
+                    android:layout_height="22dp"
                     android:src="@drawable/ic_money"
-                    android:contentDescription="Harga"
-                    android:tint="@android:color/holo_green_dark" />
+                    android:contentDescription="Ikon Harga" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginStart="8dp">
+
+                    <TextView
+                        android:text="Harga Tiket"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:textStyle="bold"
+                        android:textSize="14sp" />
 
                 <TextView
                     android:id="@+id/tvPrice"
@@ -142,6 +222,7 @@
                     android:text="Rp 25.000"
                     android:textColor="@android:color/black"
                     android:textSize="16sp" />
+            </LinearLayout>
             </LinearLayout>
 
             <!-- Deskripsi -->
@@ -163,28 +244,13 @@
                 android:layout_marginTop="16dp"
                 android:text="Lihat di Google Maps" />
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="80dp" />
+            <Button
+                android:id="@+id/btn_back_custom"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="16dp"
+                android:text="Kembali ke Halaman Utama"/>
         </LinearLayout>
     </ScrollView>
-
-    <!-- Tombol Bottom Navigation Bar -->
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/bottomNav"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-
-        android:background="@color/blue_primary"
-        android:elevation="8dp"
-        app:labelVisibilityMode="labeled"
-        app:itemIconTint="@color/nav_item_color"
-        app:itemTextColor="@color/nav_item_color"
-        app:menu="@menu/bottom_nav_menu"
-
-        app:itemActiveIndicatorStyle="@null"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
-
 </androidx.constraintlayout.widget.ConstraintLayout>

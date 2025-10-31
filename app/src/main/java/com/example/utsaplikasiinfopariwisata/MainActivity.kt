@@ -29,13 +29,6 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // 🟢 TAMBAHKAN INISIALISASI INI DI SINI!
-        bottomNavigation = binding.bottomNav
-        // Ini memastikan saat MainActivity dibuat, ikon Home aktif.
-        bottomNavigation.menu.findItem(R.id.nav_home)?.isChecked = true
-        bottomNavigation.menu.findItem(R.id.nav_favorites)?.isChecked = false
-
-
         // 🟢 1. Setup SearchView
         val searchView = binding.searchView
         val searchSrcTextId =
@@ -63,7 +56,7 @@ class MainActivity : AppCompatActivity() {
         data = loadSampleData() // Pastikan fungsi ini tersedia
         adapter = TourismAdapter(data) { item ->
             val intent = Intent(this, DetailActivity::class.java)
-            intent.putExtra("tourism", item)
+            intent.putExtra("tourism", item) // key harus sama di DetailActivity
             startActivity(intent)
         }
 
@@ -81,26 +74,6 @@ class MainActivity : AppCompatActivity() {
                 return true
             }
         })
-
-        // 🟢 4. Bottom Navigation Listener (Hanya perlu diset sekali di onCreate)
-        bottomNavigation.menu.findItem(R.id.nav_home)?.isChecked = true // 👈 PENTING: Home aktif saat dibuat
-
-        bottomNavigation.setOnItemSelectedListener { item ->
-            when (item.itemId) {
-                R.id.nav_home -> {
-                    // Home diklik, pastikan tetap aktif
-                    item.isChecked = true
-                    true
-                }
-                R.id.nav_favorites -> {
-                    // Pindah, JANGAN AKTIFKAN DI SINI
-                    val intent = Intent(this, FavoriteActivity::class.java)
-                    startActivity(intent)
-                    true
-                }
-                else -> false
-            }
-        }
     }// ❌ onCreate() TUTUP DENGAN BENAR DI SINI
 
     private fun loadSampleData(): List<Tourism> {
@@ -114,7 +87,6 @@ class MainActivity : AppCompatActivity() {
                 "0812-3456-7890",       // nomor telepon
                 "08.00 - 17.00",        // jam buka
                 4.7,          // rating
-                false,           // belum disimpan
                 "Rp 0 - 20.000"
             ),
             Tourism(
@@ -126,7 +98,6 @@ class MainActivity : AppCompatActivity() {
                 "0811-2688-000",       // nomor telepon
                 "07:30 - 17.00",     // jam buka
                 4.8,          // rating
-                false,           // belum disimpan
                 "Rp 50.000"
             ),
             Tourism(
@@ -138,7 +109,6 @@ class MainActivity : AppCompatActivity() {
                 "0852-42020 251",       // nomor telepon
                 "09:00 - 17.00",        // jam buka
                 4.5,          // rating
-                false,           // belum disimpan
                 "Rp 700.000"
             ),
             Tourism(
@@ -150,7 +120,6 @@ class MainActivity : AppCompatActivity() {
                 "(0385) 41006",       // nomor telepon
                 "08.00 - 17.00",       // jam buka
                 4.8,          // rating
-                false,           // belum disimpan
                 "Rp 5.000 - 50.000"
             ),
             Tourism(
@@ -162,7 +131,6 @@ class MainActivity : AppCompatActivity() {
                 "08123-5466-831",       // nomor telepon
                 "08.00 - 17.00",        // jam buka
                 4.6,          // rating
-                false,           // belum disimpan
                 "Rp 54.000"
             ),
             Tourism(
@@ -174,7 +142,6 @@ class MainActivity : AppCompatActivity() {
                 "08123-4571-135",       // nomor telepon
                 "08.00 - 17.00",        // jam buka
                 4.7,          // rating
-                false,           // belum disimpan
                 "Rp 5.000"
             ),
             Tourism(
@@ -186,7 +153,6 @@ class MainActivity : AppCompatActivity() {
                 "Tidak ada Nomor Telepon",  // nomor telepon
                 "24 Jam",        // jam buka
                 4.9,          // rating
-                false,           // belum disimpan
                 "Rp 2.000 - 5.000"
             ),
             Tourism(
@@ -198,7 +164,6 @@ class MainActivity : AppCompatActivity() {
                 "0811-4057-113",       // nomor telepon
                 "Senin–Kamis 07:30–16:00 dan Jumat 07:30–16:30 ",  // jam buka
                 4.6,          // rating
-                false,          // belum disimpan
                 "Rp 5.000"
             )
         )

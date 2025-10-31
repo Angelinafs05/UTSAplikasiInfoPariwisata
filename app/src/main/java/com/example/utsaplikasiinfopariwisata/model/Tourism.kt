@@ -13,6 +13,5 @@ data class Tourism(
     val phone: String,
     val time: String,
     val rating: Double,          // ⬅️ Tambahan
-    var isFavorite: Boolean = false, // ⬅️ Tambahan (default belum favorit)
     val price: String // Tambahan Harga
 ) : Parcelable

@@ -19,7 +19,9 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".DetailActivity" />
-        <activity android:name=".FavoriteActivity" />
-    </application>
+        <activity
+            android:name=".DetailActivity"
+            android:theme="@style/Theme.UTSAplikasiInfoPariwisata.NoActionBar" /> <activity
+        android:name=".FavoriteActivity"
+        android:theme="@style/Theme.UTSAplikasiInfoPariwisata.NoActionBar" /> </application>
 </manifest>
