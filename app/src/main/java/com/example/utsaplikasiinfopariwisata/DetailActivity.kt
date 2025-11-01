@@ -32,11 +32,22 @@ class DetailActivity : AppCompatActivity() { // Pastikan Anda mendeklarasikan cl
             binding.tvName.text = tourismItem.name
             binding.ivPhoto.setImageResource(tourismItem.image)
             binding.tvLocation.text = tourismItem.location
-            binding.tvDescription.text = tourismItem.description
             binding.tvPhone.text = tourismItem.phone
             binding.tvTime.text = tourismItem.time
             binding.tvPrice.text = tourismItem.price
             // ...
+
+        when (tourismItem.name) {
+            "Danau Toba" -> binding.tvDescription.text = "${tourismItem.description}\n\nFasilitas:\n- Penginapan mulai dari homestay hingga resort tepi danau\n- Restoran dan kafe dengan menu lokal Batak\n- Area parkir luas\n- Penyewaan perahu dan sepeda motor\n- Pusat oleh-oleh khas Batak\n- Spot foto dan area camping."
+            "Candi Borobudur" -> binding.tvDescription.text = "${tourismItem.description}\n\nFasilitas:\n- Area parkir luas\n- Museum Borobudur\n- Area kuliner dan toko suvenir\n- Shuttle bus dan pemandu tur\n- Toilet umum dan area istirahat."
+            "Raja Ampat" -> binding.tvDescription.text = "${tourismItem.description}\n\nFasilitas:\n- Penginapan eco-resort dan homestay\n- Pusat penyewaan alat snorkeling dan diving\n- Transportasi speedboat antar pulau\n- Restoran seafood\n- Pemandu wisata laut\n- Area konservasi dan edukasi lingkungan."
+            "Labuan Bajo" -> binding.tvDescription.text = "${tourismItem.description}\n\nFasilitas:\n- Hotel, villa, dan kapal liveaboard\n- Pelabuhan wisata dan penyewaan kapal\n- Restoran tepi laut\n- Pusat informasi wisata dan diving center\n- Bandara Komodo\n- Pemandu tur dan transportasi lokal."
+            "Gunung Bromo" -> binding.tvDescription.text = "${tourismItem.description}\n\nFasilitas:\n- Penginapan sekitar Cemoro Lawang\n- Sewa jeep menuju kawah\n- Area parkir luas\n- Kuda sewaan di lautan pasir\n- Warung dan kafe\n- Pos pengamatan sunrise."
+            "Kawah Ijen" -> binding.tvDescription.text = "${tourismItem.description}\n\nFasilitas:\n- Basecamp pendakian dan alat keselamatan\n- Warung dan tempat istirahat\n- Area parkir\n- Pemandu lokal dan porter\n- Homestay sekitar Ijen\n- Pos keamanan dan toilet umum."
+            "Pantai Kuta" -> binding.tvDescription.text = "${tourismItem.description}\n\nFasilitas:\n- Hotel, resort, dan vila tepi pantai\n- Restoran, bar, dan beach club\n- Pusat perbelanjaan dan hiburan\n- Sewa papan selancar dan payung pantai\n- Toilet umum dan kamar bilas\n- Pos penjaga pantai dan area parkir."
+            "Wakatobi" -> binding.tvDescription.text = "${tourismItem.description}\n\nFasilitas:\n- Resort dan homestay tropis\n- Diving center profesional\n- Transportasi laut antar pulau\n- Restoran seafood\n- Pusat konservasi bahari\n- Bandara Matahora untuk akses wisata."
+            else -> binding.tvDescription.text = tourismItem.description
+        }
 
         // klik nomor -> dial
         binding.tvPhone.setOnClickListener {

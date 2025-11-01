@@ -82,7 +82,8 @@ class MainActivity : AppCompatActivity() {
                 1,
                 "Danau Toba",
                 "Sumatera Utara",
-                "Danau vulkanik terbesar di dunia yang terbentuk dari letusan supergunung purba Toba, dikelilingi pemandangan pegunungan dan Pulau Samosir di tengahnya.",
+                "Danau Toba adalah danau vulkanik terbesar di Asia Tenggara dan salah satu keajaiban alam Indonesia. Di tengahnya terdapat Pulau Samosir, yang juga menjadi tempat wisata budaya Batak dengan pemandangan menakjubkan dan udara sejuk." +
+                        "Fasilitas: Penginapan mulai dari homestay hingga resort tepi danau, Restoran dan kafe dengan menu lokal Batak, Area parkir luas, Penyewaan perahu dan sepeda motor, Pusat oleh-oleh khas Batak, Spot foto dan area camping.",
                 R.drawable.danau_toba,
                 "0812-3456-7890",       // nomor telepon
                 "08.00 - 17.00",        // jam buka
