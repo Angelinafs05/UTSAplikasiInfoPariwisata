@@ -3,6 +3,7 @@ package com.example.utsaplikasiinfopariwisata.adapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.Filter
+import android.widget.Filter.FilterResults
 import android.widget.Filterable
 import androidx.recyclerview.widget.RecyclerView
 import com.example.utsaplikasiinfopariwisata.R
@@ -11,37 +12,66 @@ import com.example.utsaplikasiinfopariwisata.model.Tourism
 import java.util.Locale
 
 class TourismAdapter(
-    private var originalList: List<Tourism>,
-    private val onItemClick: (Tourism) -> Unit
-) : RecyclerView.Adapter<TourismAdapter.ViewHolder>(), Filterable {
+    private var listTourism: MutableList<Tourism>,
+    private val onItemClick: (Tourism) -> Unit,
+    private val onFavoriteClick: (Tourism) -> Unit
+) : RecyclerView.Adapter<TourismAdapter.TourismViewHolder>(), Filterable {
 
-    private var filteredList: MutableList<Tourism> = originalList.toMutableList()
+    private var originalList: List<Tourism> = listTourism.toList()
+    private var filteredList: MutableList<Tourism> = listTourism.toMutableList()
 
-    inner class ViewHolder(val binding: ItemTourismBinding) : RecyclerView.ViewHolder(binding.root) {
+    inner class TourismViewHolder(val binding: ItemTourismBinding) :
+        RecyclerView.ViewHolder(binding.root) {
+
         fun bind(item: Tourism) {
+            // Set teks
             binding.tvTitle.text = item.name
             binding.tvLocation.text = item.location
             binding.ivPhoto.setImageResource(item.image)
-
-            // Tampilkan rating tanpa RatingBar
             binding.tvRating.text = "⭐ ${item.rating}"
 
+            // Set ikon favorit sesuai status
+            binding.ivFavorite.setImageResource(
+                if (item.isFavorite) R.drawable.ic_star_filled
+                else R.drawable.ic_star_border
+            )
+
+            // Klik favorit
+            binding.ivFavorite.setOnClickListener {
+                item.isFavorite = !item.isFavorite
+                binding.ivFavorite.setImageResource(
+                    if (item.isFavorite) R.drawable.ic_star_filled
+                    else R.drawable.ic_star_border
+                )
+                onFavoriteClick(item)
+            }
             // Klik item untuk buka detail
-            binding.root.setOnClickListener { onItemClick(item) }
+            binding.root.setOnClickListener {
+                onItemClick(item)
+            }
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val binding = ItemTourismBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return ViewHolder(binding)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TourismViewHolder {
+        val binding =
+            ItemTourismBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return TourismViewHolder(binding)
     }
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val item = filteredList[position]  // gunakan filteredList, bukan data
-        holder.bind(item) // panggil fungsi bind di ViewHolder
+    override fun onBindViewHolder(holder: TourismViewHolder, position: Int) {
+        val item = filteredList[position]
+        holder.bind(item)
     }
 
     override fun getItemCount(): Int = filteredList.size
+
+    // Fungsi untuk update data adapter (misal untuk halaman favorit)
+    fun updateData(newList: List<Tourism>) {
+        listTourism.clear()
+        listTourism.addAll(newList)
+        filteredList = listTourism.toMutableList()
+        notifyDataSetChanged()
+    }
 
     // Filterable implementation (search)
     override fun getFilter(): Filter {
@@ -52,9 +82,9 @@ class TourismAdapter(
                 results.values = if (query.isEmpty()) {
                     originalList
                 } else {
-                    originalList.filter {
-                        it.name.lowercase(Locale.getDefault()).contains(query) ||
-                                it.location.lowercase(Locale.getDefault()).contains(query)
+                    originalList.filter { tourism ->
+                        tourism.name.lowercase(Locale.getDefault()).contains(query) ||
+                                tourism.location.lowercase(Locale.getDefault()).contains(query)
                     }
                 }
                 return results

@@ -1,11 +1,11 @@
 package com.example.utsaplikasiinfopariwisata
 
+import android.view.Menu
+import android.view.MenuItem
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.PorterDuff
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.widget.EditText
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
@@ -21,7 +21,7 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var adapter: TourismAdapter
-    private lateinit var data: List<Tourism>
+    private lateinit var data: MutableList<Tourism>
     private lateinit var bottomNavigation: BottomNavigationView
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -29,12 +29,15 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        // 🟢 Aktifkan toolbar agar ikon favorit muncul
+        val toolbar: androidx.appcompat.widget.Toolbar = findViewById(R.id.toolbar)
+        setSupportActionBar(toolbar)
+
         // 🟢 1. Setup SearchView
         val searchView = binding.searchView
         val searchSrcTextId =
             searchView.context.resources.getIdentifier("android:id/search_src_text", null, null)
         val searchEditText = searchView.findViewById<EditText>(searchSrcTextId)
-
         searchEditText?.apply {
             setTextColor(Color.BLACK)
             setHintTextColor(Color.DKGRAY)
@@ -53,21 +56,29 @@ class MainActivity : AppCompatActivity() {
         closeBtn?.setColorFilter(Color.DKGRAY, PorterDuff.Mode.SRC_IN)
 
         // 🟢 2. Load Data dan Setup RecyclerView
-        data = loadSampleData() // Pastikan fungsi ini tersedia
-        adapter = TourismAdapter(data) { item ->
-            val intent = Intent(this, DetailActivity::class.java)
-            intent.putExtra("tourism", item) // key harus sama di DetailActivity
-            startActivity(intent)
-        }
+        data = globalTourismData
+        adapter = TourismAdapter(
+            listTourism = globalTourismData,
+            onItemClick = { item ->
+                val intent = Intent(this, DetailActivity::class.java)
+                intent.putExtra("tourism", item)
+                startActivity(intent)
+            },
+            onFavoriteClick = { clickedTourism ->
+                clickedTourism.isFavorite = !clickedTourism.isFavorite
+                val name = clickedTourism.name
+                val status = if (clickedTourism.isFavorite) "ditambahkan ke" else "dihapus dari"
+                Snackbar.make(binding.root, "$name $status Favorit", Snackbar.LENGTH_SHORT).show()
+                adapter.notifyDataSetChanged()
+            }
+        )
 
         binding.rvTourism.layoutManager = LinearLayoutManager(this)
         binding.rvTourism.adapter = adapter
 
         // 🟢 3. SearchView Listener
         binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-            override fun onQueryTextSubmit(query: String?): Boolean {
-                return false
-            }
+            override fun onQueryTextSubmit(query: String?): Boolean = false
 
             override fun onQueryTextChange(newText: String?): Boolean {
                 adapter.filter.filter(newText)
@@ -76,7 +87,28 @@ class MainActivity : AppCompatActivity() {
         })
     }// ❌ onCreate() TUTUP DENGAN BENAR DI SINI
 
-    private fun loadSampleData(): List<Tourism> {
+// 🟡 Tambahkan menu favorit di toolbar
+override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+    menuInflater.inflate(R.menu.main_menu, menu)
+    return true
+}
+
+// Saat ikon bintang diklik, buka halaman Favorit
+override fun onOptionsItemSelected(item: MenuItem): Boolean {
+    return when (item.itemId) {
+        R.id.action_favorite -> {
+            val intent = Intent(this, FavoriteActivity::class.java)
+            startActivity(intent)
+            true
+        }
+        else -> super.onOptionsItemSelected(item)
+    }
+}
+
+companion object {
+    @JvmField
+    var globalTourismData: MutableList<Tourism> = loadSampleData().toMutableList()
+     fun loadSampleData(): List<Tourism> {
         return listOf(
             Tourism(
                 1,
@@ -166,8 +198,9 @@ class MainActivity : AppCompatActivity() {
                 "Senin–Kamis 07:30–16:00 dan Jumat 07:30–16:30 ",  // jam buka
                 4.6,          // rating
                 "Rp 5.000"
-            )
-        )
-    }
-}
+            ) // Pastikan ini ada
+        ) // <-- BARIS BARU (Kemungkinan ini adalah BARIS 206 sekarang): Menutup fungsi listOf(...)
+    } // Kurung tutup untuk fun loadSampleData()
+} // Kurung tutup untuk companion object
+} // Kurung tutup untuk class MainActivity
 

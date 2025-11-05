@@ -7,6 +7,9 @@
     android:layout_marginHorizontal="16dp"
     android:layout_marginTop="8dp"
     android:layout_marginBottom="8dp"
+    android:clickable="false"
+    android:focusable="false"
+    android:foreground="?android:attr/selectableItemBackground"
     app:cardCornerRadius="12dp"
     app:cardElevation="4dp"
     app:cardBackgroundColor="@color/white_bg">
@@ -74,7 +77,9 @@
             android:src="@drawable/ic_star_border"
             android:contentDescription="Favorite"
             android:tint="@android:color/holo_orange_light"
-            android:layout_gravity="center_vertical" />
+            android:layout_gravity="center_vertical"
+            android:clickable="true"
+            android:focusable="true" />
     </LinearLayout>
 
 </androidx.cardview.widget.CardView>
